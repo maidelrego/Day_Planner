@@ -59,7 +59,7 @@ function saveContent(event){
             }
            
         }
-
+        
     }
     
     event.preventDefault();
