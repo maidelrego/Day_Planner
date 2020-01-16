@@ -9,6 +9,11 @@ var allInputs = $(":input:text");
 var curreentHour = moment().hour();
 // console.log(curreentHour);
 
+var inputValue = new Array(9);
+const data = JSON.parse(localStorage.getItem('items'));
+if(data != null){
+    inputValue = data;
+}
 // a for loop to go trough all my inputs ids
 for(var i= 0; i < allInputs.length; i++){
 
@@ -17,50 +22,36 @@ for(var i= 0; i < allInputs.length; i++){
     if($(allInputs[i]).prop('id') < curreentHour ){
         $(allInputs[i]).addClass("past");
         $(allInputs[i]).prop("readonly", "true");
+        $(allInputs[i]).val(inputValue[i]);
     }
 
     if($(allInputs[i]).prop('id') > curreentHour ){
         $(allInputs[i]).addClass("future");  
-    
+        $(allInputs[i]).val(inputValue[i]);
     }
 
     if($(allInputs[i]).prop('id') == curreentHour ){
         $(allInputs[i]).addClass("present");
+        $(allInputs[i]).val(inputValue[i]);
     }
 
 }
 
-inputValue = [];
+
 var buttonEl = $('button').on('click', saveContent);
 
 function saveContent(event){
-
-    const data = JSON.parse(localStorage.getItem('items'));
-
+    
     for(var i = 0; i < allInputs.length; i++){
-
+        
         if($(allInputs[i]).prop('id') == $(this).attr('id')){
-            console.log($(allInputs[i]).val());
-
-            if(data != null){
-
-                data.push($(allInputs[i]).val());
-                localStorage.setItem('items', JSON.stringify(data));
-                console.log("entro1");
-                console.log(data);
-            }
-
-            else{
-               
-                let a = $(allInputs[i]).val();
-                inputValue.push(a);
-                localStorage.setItem('items', JSON.stringify(inputValue));
-                console.log("entro2");
-            }
-           
+            let a = $(allInputs[i]).val();
+            inputValue[i] = a;
+            
         }
         
     }
-    
+
+    localStorage.setItem('items', JSON.stringify(inputValue));
     event.preventDefault();
 }
